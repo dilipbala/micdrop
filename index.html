@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h1>TripTalks on MicDrop</h1>
+    <button id="join">Join Live Stream</button>
+    <div id="status">Status: Waiting...</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/livekit-client/dist/livekit-client.umd.min.js"></script>
+    <script>
+        const room = new LivekitClient.Room();
+        
+        document.getElementById('join').onclick = async () => {
+            // This URL will be your server's public address
+            await room.connect('ws://localhost:7880', 'YOUR_TOKEN');
+            document.getElementById('status').innerText = "Status: Listening to Host...";
+        };
+
+        room.on('trackSubscribed', (track) => {
+            if (track.kind === 'audio') {
+                track.attach(); // This plays the audio through the agent's speakers
+            }
+        });
+    </script>
+</body>
+</html>
